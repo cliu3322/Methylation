@@ -3,6 +3,8 @@ import taskIcon from './task/icon';
 import Event from './event/component';
 import eventIcon from './event/icon';
 
+import Trim from './trim/component';
+
 const config = {
   entityTypes: {
     Task: {
@@ -12,6 +14,10 @@ const config = {
     Event: {
       width: 50,
       height: 50,
+    },
+    Trim: {
+      width: 125,
+      height: 75,
     },
   },
   gridSize: 25,
@@ -25,6 +31,10 @@ const customEntities = {
   Event: {
     component: Event,
     icon: eventIcon,
+  },
+  Trim: {
+    component: Trim,
+    icon: taskIcon,
   },
 };
 

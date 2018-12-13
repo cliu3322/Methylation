@@ -27,7 +27,7 @@ const model: EntityState = [
   },
   {
     id: 'trim',
-    type: 'Event',
+    type: 'Trim',
     width: 50,
     height: 50,
     x: 300,

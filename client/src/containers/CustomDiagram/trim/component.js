@@ -3,10 +3,11 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import style from 'styled-components';
-import Input from '../../../components/uielements/input';
+
+import Button from '../../../components/uielements/button';
 import type { DiagComponentProps } from 'react-flow-diagram';
-import {uploadFile} from '../../../redux/fastqcuploader/actions.js';
-import dateformat from 'dateformat';
+import {trimFiles} from '../../../redux/fastqcuploader/trimActions.js';
+
 import Form from '../../../components/uielements/form';
 
 
@@ -18,10 +19,10 @@ const FormItem = Form.Item;
  * ==================================== */
 
 const TaskStyle = style.div`
-  background-color: ${props => (props.isCompleted ? 'green' : '#fff')};
+  background-color: ${props => (props.isTrimCompleted ? 'green' : '#fff')};
   display: flex;
   flex-flow: row nowrap;
-  align-items: ${props => (props.isEditing ? 'stretch' : 'center')};
+  align-items:  center;
   width: ${props => props.width}px;
   height: ${props => props.height}px;
   border-radius: .5rem;
@@ -36,14 +37,13 @@ const Name = style.span`
 
 export type TaskProps = DiagComponentProps & {
   name: string,
-  isCompleted: boolean,
-  FileDetails: [],
+  isTrimCompleted: boolean,
 };
 const Task = (props: TaskProps) => (
   <TaskStyle
     width={props.model.width}
     height={props.model.height}
-    isCompleted={props.isCompleted}
+    isTrimCompleted={props.isTrimCompleted}
   >
     <Name
       style={{ display: 'block' }}
@@ -64,56 +64,46 @@ class TaskComponent extends Component<
 > {
 
   constructor(props) {
+
     super(props);
+    console.log(this.state)
     this.state = {
-      FileDetails: [],
       name: this.props.model.name,
-      isCompleted: false,
-      loaded: 0,
+      isTrimCompleted: false,
     };
     this.click= this.click.bind(this)
   }
 
-  componentWillReceiveProps(nextProps){
-  // console.log("nextProps",nextProps.fileData.data.allFilesDetail); return false;
-    let fileData = []
-     if (nextProps.fileData) {
-      nextProps.fileData.data.allFilesDetail.forEach((element,index) => {
-        // console.log("nextProps",element); return false;
-        fileData[index] = [element.fileName,element.uploader,dateformat(element.updatedAt, "mmm dd, yyyy")]
-      })
-     }
-    this.setState({FileDetails: fileData})
-  }
-
-
 
   click(e){
-    this.setState({file:e.target.files[0]});
-    var test = uploadFile({file:e.target.files[0]});
+    //this.setState({file:e.target.files[0]});
+    var test = trimFiles({file:e.target.files[0]});
     test.then(res => {
         if(res.status === 201){
           //console.log('asdfasd');
-          this.setState({isCompleted: true})
+          this.setState({isTrimCompleted: true})
         }
         else {
-          this.setState({isCompleted: false})
+          this.setState({isTrimCompleted: false})
         }
       })
 
   }
 
   render() {
+    // const {
+    //   isTrimCompleted
+    // } = this.props;
     return (
       <div>
         <Task
           {...this.props}
           name={this.state.name}
-          isCompleted = {this.state.isCompleted}
+          isTrimCompleted = {this.state.isTrimCompleted}
         />
         <Form>
           <FormItem>
-            <Input placeholder="unavailable choice" type="file" name="filePath" onChange={this.click} style={{width: 10 + 'em'}}/>
+            <Button onClick={this.click} style={{width: 10 + 'em'}}/>
           </FormItem>
         </Form>
       </div>
@@ -127,11 +117,9 @@ class TaskComponent extends Component<
 }
 
 function mapStateToProps(state) {
-  //const { todos, colors } = state.Todos;
+  //console.log(state);
   return {
-    fileData: state.fileData
-    // todos,
-    // colors
+
   };
 }
-export default connect(mapStateToProps, {uploadFile})(TaskComponent);
+export default connect(mapStateToProps, {trimFiles})(TaskComponent);

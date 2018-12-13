@@ -13,6 +13,13 @@ const LayoutContentWrapper = styled.div`
   @media (max-width: 580px) {
     padding: 15px;
   }
+  .sc-gZMcBi {
+    display:none;
+  }
+  .sc-gzVnrw {
+    display:none;
+  }
+
 `;
 
 export { LayoutContentWrapper };

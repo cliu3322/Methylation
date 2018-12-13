@@ -22,7 +22,7 @@ class CustomDiagram extends React.PureComponent {
   render() {
     //console.log(this.state);
     return (
-      <Diagram customEntities={customEntities} />
+        <Diagram customEntities={customEntities} />
     )
   };
 }
