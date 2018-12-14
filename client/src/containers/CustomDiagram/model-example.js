@@ -16,6 +16,9 @@ const model: EntityState = [
     x: 50,
     y: 0,
     name: 'upload FastQC',
+    isCompleted: false,
+    file1:'',
+    file2:'',
     linksTo: [
       {
         target: 'trim',

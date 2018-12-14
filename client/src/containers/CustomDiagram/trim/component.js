@@ -66,7 +66,7 @@ class TaskComponent extends Component<
   constructor(props) {
 
     super(props);
-    console.log(this.state)
+    //console.log(this.state)
     this.state = {
       name: this.props.model.name,
       isTrimCompleted: false,

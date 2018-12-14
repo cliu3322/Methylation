@@ -5,10 +5,14 @@ import { connect } from "react-redux";
 import style from 'styled-components';
 import Input from '../../../components/uielements/input';
 import type { DiagComponentProps } from 'react-flow-diagram';
-import {uploadFile} from '../../../redux/fastqcuploader/actions.js';
+import {
+  store as diagramStore, setEntities
+} from 'react-flow-diagram';
+import {uploadFile} from '../../../redux/fastqcuploader/uploadActions.js';
+import uploadFastqcActions from '../../../redux/uploadFastqc/actions.js';
 import dateformat from 'dateformat';
 import Form from '../../../components/uielements/form';
-
+import model from '../model-example';
 
 const FormItem = Form.Item;
 
@@ -58,6 +62,10 @@ const Task = (props: TaskProps) => (
  * ==================================== */
 
 type TaskComponentProps = DiagComponentProps;
+const {
+  changeCompleted
+} = uploadFastqcActions;
+
 
 class TaskComponent extends Component<
   TaskComponentProps
@@ -75,6 +83,7 @@ class TaskComponent extends Component<
     };
     this.click= this.click.bind(this);
     this.uploa2= this.click.bind(this);
+    //console.log(changeCompleted)
     //this.upload2= this.upload2.bind(this);
   }
 
@@ -94,7 +103,8 @@ class TaskComponent extends Component<
 
   click(e){
     this.setState({file:e.target.files[0]});
-    console.log(e.target.name)
+
+    //console.log(e.target.name)
     var test = uploadFile({file:e.target.files[0]});
     var filename = e.target.name
     test.then(res => {
@@ -107,8 +117,11 @@ class TaskComponent extends Component<
             this.setState({file2Completed: true})
           }
           if(this.state.file1Completed && this.state.file2Completed) {
-            console.log(this.state.file2Completed);
+
+            model[0].isCompleted = true;
+            diagramStore.dispatch(setEntities(model));
             this.setState({isCompleted: true})
+            console.log(diagramStore.getState());
           }
           else {
             this.setState({isCompleted: false})
@@ -123,6 +136,9 @@ class TaskComponent extends Component<
 
 
   render() {
+    const {
+      changeCompleted
+    } = this.props;
     return (
       <div>
         <Task
@@ -148,10 +164,11 @@ class TaskComponent extends Component<
 
 function mapStateToProps(state) {
   //const { todos, colors } = state.Todos;
+  //console.log(state)
   return {
     fileData: state.fileData
     // todos,
     // colors
   };
 }
-export default connect(mapStateToProps, {uploadFile})(TaskComponent);
+export default connect(mapStateToProps, {changeCompleted})(TaskComponent);
