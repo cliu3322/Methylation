@@ -56,7 +56,8 @@ apiRoutes.post("/uploadFile", upload.single('image'), function (req, res, next) 
 
           res.status(201).json({
         message: "File uploaded successfully",
-        allFilesDetail:files
+        allFilesDetail:files,
+        result: result
       });
         } else {
           res.status(204).json({

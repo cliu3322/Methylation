@@ -112,16 +112,20 @@ class TaskComponent extends Component<
           //console.log('asdfasd');
           if(filename==='file1'){
             this.setState({file1Completed: true})
+            model[0].file1 = res.data.result.fileName;
+            diagramStore.dispatch(setEntities(model));
           }
           if(filename==='file2'){
             this.setState({file2Completed: true})
+            model[0].file2 = res.data.result.fileName;
+            diagramStore.dispatch(setEntities(model));
           }
           if(this.state.file1Completed && this.state.file2Completed) {
-
             model[0].isCompleted = true;
             diagramStore.dispatch(setEntities(model));
             this.setState({isCompleted: true})
-            console.log(diagramStore.getState());
+            //console.log(diagramStore.getState());
+
           }
           else {
             this.setState({isCompleted: false})
@@ -136,9 +140,6 @@ class TaskComponent extends Component<
 
 
   render() {
-    const {
-      changeCompleted
-    } = this.props;
     return (
       <div>
         <Task
