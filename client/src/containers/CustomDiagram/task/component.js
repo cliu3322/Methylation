@@ -69,9 +69,13 @@ class TaskComponent extends Component<
       FileDetails: [],
       name: this.props.model.name,
       isCompleted: false,
+      file1Completed: false,
+      file2Completed: false,
       loaded: 0,
     };
-    this.click= this.click.bind(this)
+    this.click= this.click.bind(this);
+    this.uploa2= this.click.bind(this);
+    //this.upload2= this.upload2.bind(this);
   }
 
   componentWillReceiveProps(nextProps){
@@ -90,11 +94,25 @@ class TaskComponent extends Component<
 
   click(e){
     this.setState({file:e.target.files[0]});
+    console.log(e.target.name)
     var test = uploadFile({file:e.target.files[0]});
+    var filename = e.target.name
     test.then(res => {
         if(res.status === 201){
           //console.log('asdfasd');
-          this.setState({isCompleted: true})
+          if(filename==='file1'){
+            this.setState({file1Completed: true})
+          }
+          if(filename==='file2'){
+            this.setState({file2Completed: true})
+          }
+          if(this.state.file1Completed && this.state.file2Completed) {
+            console.log(this.state.file2Completed);
+            this.setState({isCompleted: true})
+          }
+          else {
+            this.setState({isCompleted: false})
+          }
         }
         else {
           this.setState({isCompleted: false})
@@ -102,6 +120,7 @@ class TaskComponent extends Component<
       })
 
   }
+
 
   render() {
     return (
@@ -113,7 +132,8 @@ class TaskComponent extends Component<
         />
         <Form>
           <FormItem>
-            <Input placeholder="unavailable choice" type="file" name="filePath" onChange={this.click} style={{width: 10 + 'em'}}/>
+            <Input type="file" name="file1" onChange={this.click} style={{width: 10 + 'em'}}/>
+            <Input type="file" name="file2" onChange={this.click} style={{width: 10 + 'em'}}/>
           </FormItem>
         </Form>
       </div>
