@@ -7,8 +7,11 @@ import style from 'styled-components';
 import Button from '../../../components/uielements/button';
 import type { DiagComponentProps } from 'react-flow-diagram';
 import {trimFiles} from '../../../redux/fastqcuploader/trimActions.js';
-
+import {
+  store as diagramStore
+} from 'react-flow-diagram';
 import Form from '../../../components/uielements/form';
+import {store as storeMain} from '../../../redux/store.js';
 
 
 const FormItem = Form.Item;
@@ -76,17 +79,14 @@ class TaskComponent extends Component<
 
 
   click(e){
+    e.preventDefault();
+
     //this.setState({file:e.target.files[0]});
-    var test = trimFiles({file:e.target.files[0]});
+    var test = trimFiles(diagramStore.getState().entity[0]);
     test.then(res => {
-        if(res.status === 201){
-          //console.log('asdfasd');
-          this.setState({isTrimCompleted: true})
-        }
-        else {
-          this.setState({isTrimCompleted: false})
-        }
-      })
+        console.log(res)
+    })
+    console.log(storeMain.getState());
 
   }
 
@@ -103,7 +103,9 @@ class TaskComponent extends Component<
         />
         <Form>
           <FormItem>
-            <Button onClick={this.click} style={{width: 10 + 'em'}}/>
+            <Button type="primary" style={{width: 10 + 'em'}} onClick={this.click} >
+              Trim
+            </Button>
           </FormItem>
         </Form>
       </div>
@@ -117,7 +119,6 @@ class TaskComponent extends Component<
 }
 
 function mapStateToProps(state) {
-  //console.log(state);
   return {
 
   };

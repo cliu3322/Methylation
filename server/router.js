@@ -2,6 +2,8 @@ import express from 'express';
 import multer from 'multer';
 import mongoose from 'mongoose';
 import FileDetail from './models/FileDetail';
+const { exec } = require('child_process');
+const fs = require('fs');
 
 
 
@@ -32,50 +34,37 @@ var upload = multer({
 
 
 
-apiRoutes.post("/uploadFile", upload.single('image'), function (req, res, next) {
-  // console.log("ghggh",req.file); return false;
-   if (req.file==undefined) {
-    return res.status(422).send({ error: 'You must select a file to upload.' });
-  }
-
-  const product = new FileDetail({
-    _id: new mongoose.Types.ObjectId(),
-    // uploader: req.body.uploader,
-    uploader: "Ajay",
-    filePath: req.file.path,
+apiRoutes.post("/uploadFile", upload.single('file'), function (req, res, next) {
+  console.log(req.file.originalname)
+  res.status(201).json({
+    message: "File uploaded successfully",
     fileName:req.file.originalname
   });
-  product
-    .save()
-    // .then(result => {
-      .then(result => {
-
-
- FileDetail.find({ }).exec(function(err, files) {
-        if (files) {
-
-          res.status(201).json({
-        message: "File uploaded successfully",
-        allFilesDetail:files,
-        result: result
-      });
-        } else {
-          res.status(204).json({
-        message: "No file detail exist",
-        allFilesDetail:files
-
-      });
-        }
-      });
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json({
-        error: err
-      });
-    });
 });
 
+//bismark /Users/chunyiliu/Methylation/hg38 -o bismark -1 ./uploads/test1.fq -2 ./uploads/test2.fq --parallel 4 -p 4 --score_min L,0,-0.6 -X 1000
+
+
+
+apiRoutes.get('/trim', function (req, res) {
+ console.log(req.query.files.file1)
+  exec('fastqc -o ./result/Fastqc/ ./uploads/L002_001.R1.test.fastq ./uploads/L002_001.R2.test.fastq NA12878v2-Bstag_ACTGAGCG_H3Y7GALXX_L002_001.R1.fastq NA12878v2-Bstag_ACTGAGCG_H3Y7GALXX_L002_001.R2.fastq ',
+  (err, stdout, stderr) => {
+    if (err) {
+      console.error(`exec error: ${err}`);
+      return;
+    }
+    fs.readFile('./result/Fastqc/L002_001.R1.test_fastqc.html', function (err, html) {
+        if (err) {
+            throw err;
+        }
+        res.writeHeader(200, {"Content-Type": "text/html"});
+        res.write(html);
+        res.end();
+    });
+
+  });
+});
 
 apiRoutes.get('/getFileDetails', function (req, res) {
 
@@ -89,9 +78,7 @@ apiRoutes.get('/getFileDetails', function (req, res) {
       });
         } else {
           res.status(204).json({
-
         allFilesDetail:files
-
       });
         }
       });

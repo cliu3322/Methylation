@@ -105,19 +105,19 @@ class TaskComponent extends Component<
     this.setState({file:e.target.files[0]});
 
     //console.log(e.target.name)
-    var test = uploadFile({file:e.target.files[0]});
+    var uploadResult = uploadFile({file:e.target.files[0]});
     var filename = e.target.name
-    test.then(res => {
+    uploadResult.then(res => {
         if(res.status === 201){
           //console.log('asdfasd');
           if(filename==='file1'){
             this.setState({file1Completed: true})
-            model[0].file1 = res.data.result.fileName;
+            model[0].file1 = res.data.fileName;
             diagramStore.dispatch(setEntities(model));
           }
           if(filename==='file2'){
             this.setState({file2Completed: true})
-            model[0].file2 = res.data.result.fileName;
+            model[0].file2 = res.data.fileName;
             diagramStore.dispatch(setEntities(model));
           }
           if(this.state.file1Completed && this.state.file2Completed) {

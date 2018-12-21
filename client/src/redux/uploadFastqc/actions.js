@@ -5,8 +5,6 @@ const uploadFastqcActions = {
     //console.log('asdfasdf');
     return (dispatch, getState) => {
       console.log('getState().entity');
-      const newTask = {
-      };
       //const todos = [newTask, ...getState().entity];
       dispatch({
         type: uploadFastqcActions.CHANGE_COMPLETED,
