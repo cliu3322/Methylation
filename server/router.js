@@ -9,6 +9,9 @@ const fs = require('fs');
 
 export default function (app) {
 
+
+app.use('/Fastqc', express.static('result/Fastqc'))
+
 const apiRoutes = express.Router();
 
 
@@ -35,7 +38,6 @@ var upload = multer({
 
 
 apiRoutes.post("/uploadFile", upload.single('file'), function (req, res, next) {
-  console.log(req.file.originalname)
   res.status(201).json({
     message: "File uploaded successfully",
     fileName:req.file.originalname
@@ -47,22 +49,18 @@ apiRoutes.post("/uploadFile", upload.single('file'), function (req, res, next) {
 
 
 apiRoutes.get('/trim', function (req, res) {
- console.log(req.query.files.file1)
-  exec('fastqc -o ./result/Fastqc/ ./uploads/L002_001.R1.test.fastq ./uploads/L002_001.R2.test.fastq NA12878v2-Bstag_ACTGAGCG_H3Y7GALXX_L002_001.R1.fastq NA12878v2-Bstag_ACTGAGCG_H3Y7GALXX_L002_001.R2.fastq ',
+  exec('fastqc -o ./result/Fastqc/ ./uploads/'+ JSON.parse(req.query.filesName).file1+' ./uploads/'+JSON.parse(req.query.filesName).file2+' NA12878v2-Bstag_ACTGAGCG_H3Y7GALXX_L002_001.R1.fastq NA12878v2-Bstag_ACTGAGCG_H3Y7GALXX_L002_001.R2.fastq ',
   (err, stdout, stderr) => {
     if (err) {
       console.error(`exec error: ${err}`);
       return;
     }
-    fs.readFile('./result/Fastqc/L002_001.R1.test_fastqc.html', function (err, html) {
-        if (err) {
-            throw err;
-        }
-        res.writeHeader(200, {"Content-Type": "text/html"});
-        res.write(html);
-        res.end();
+    res.status(201).json({
+      file1:JSON.parse(req.query.filesName).file1,
+      file2:JSON.parse(req.query.filesName).file2,
+      result:stdout,
+      isTrimCompleted:true,
     });
-
   });
 });
 

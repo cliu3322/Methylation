@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-export function trimFiles(files) {
-  //console.log(filesname);
+export function trimFiles(filesName) {
+  //console.log(filesName);
   return axios.get(`http://localhost:3000/api/trim`,{
     params: {
-      files
+      filesName
     }
   })
 };

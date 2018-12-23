@@ -12,6 +12,9 @@ import session from 'express-session';
 const { port, secretKey, expiredAfter } = Config;
 const app = express();
 
+
+
+
 function doesUserExists(username, password) {
 	const user = {
 		id: 1,

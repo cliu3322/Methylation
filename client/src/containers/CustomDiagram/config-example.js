@@ -4,6 +4,7 @@ import Event from './event/component';
 import eventIcon from './event/icon';
 
 import Trim from './trim/component';
+import Align from './align/component';
 
 const config = {
   entityTypes: {
@@ -16,6 +17,10 @@ const config = {
       height: 50,
     },
     Trim: {
+      width: 125,
+      height: 75,
+    },
+    Align: {
       width: 125,
       height: 75,
     },
@@ -33,6 +38,10 @@ const customEntities = {
     icon: eventIcon,
   },
   Trim: {
+    component: Trim,
+    icon: taskIcon,
+  },
+  Align: {
     component: Trim,
     icon: taskIcon,
   },
