@@ -6,7 +6,7 @@ import style from 'styled-components';
 
 import Button from '../../../components/uielements/button';
 import type { DiagComponentProps } from 'react-flow-diagram';
-import {trimFiles} from '../../../redux/fastqcuploader/trimActions.js';
+import {alignFiles} from '../../../redux/fastqcuploader/alignActions.js';
 import {
   store as diagramStore
 } from 'react-flow-diagram';
@@ -22,7 +22,7 @@ const FormItem = Form.Item;
  * ==================================== */
 
 const TaskStyle = style.div`
-  background-color: ${props => (props.isTrimCompleted ? 'green' : '#fff')};
+  background-color: ${props => (props.isAlignCompleted ? 'green' : '#fff')};
   display: flex;
   flex-flow: row nowrap;
   align-items:  center;
@@ -40,13 +40,13 @@ const Name = style.span`
 
 export type TaskProps = DiagComponentProps & {
   name: string,
-  isTrimCompleted: boolean,
+  isAlignCompleted: boolean,
 };
 const Task = (props: TaskProps) => (
   <TaskStyle
     width={props.model.width}
     height={props.model.height}
-    isTrimCompleted={props.isTrimCompleted}
+    isAlignCompleted={props.isAlignCompleted}
   >
     <Name
       style={{ display: 'block' }}
@@ -72,7 +72,7 @@ class TaskComponent extends Component<
     //console.log(this.state)
     this.state = {
       name: this.props.model.name,
-      isTrimCompleted: false,
+      isAlignCompleted: false,
     };
     this.click= this.click.bind(this)
   }
@@ -82,18 +82,14 @@ class TaskComponent extends Component<
     e.preventDefault();
 
     //this.setState({file:e.target.files[0]});
-    var test = trimFiles(diagramStore.getState().entity[0]);
+    var test = alignFiles(diagramStore.getState().entity[0]);
     test.then(res => {
-        //console.log(res.data.isTrimCompleted);
-        if(res.data.isTrimCompleted){
-          this.setState({isTrimCompleted: true});
-          var file1Name = res.data.file1.replace(".", "_")+'c.html';
-          var file2Name = res.data.file2.replace(".", "_")+'c.html';
-          //console.log(file1Name);
-          window.open("http://localhost:3000/Fastqc/"+file1Name);
-          window.open("http://localhost:3000/Fastqc/"+file2Name);
+        console.log(res);
+        if(res.data.isAlignCompleted){
+          this.setState({isAlignCompleted: true});
+
         } else {
-          this.setState({isTrimCompleted: false});
+          this.setState({isAlignCompleted: false});
         }
     })
   //  console.log(storeMain.getState());
@@ -102,19 +98,19 @@ class TaskComponent extends Component<
 
   render() {
     // const {
-    //   isTrimCompleted
+    //   isAlignCompleted
     // } = this.props;
     return (
       <div>
         <Task
           {...this.props}
           name={this.state.name}
-          isTrimCompleted = {this.state.isTrimCompleted}
+          isAlignCompleted = {this.state.isAlignCompleted}
         />
         <Form>
           <FormItem>
             <Button type="primary" style={{width: 10 + 'em'}} onClick={this.click} >
-              Trim
+              Align
             </Button>
           </FormItem>
         </Form>
@@ -133,4 +129,4 @@ function mapStateToProps(state) {
 
   };
 }
-export default connect(mapStateToProps, {trimFiles})(TaskComponent);
+export default connect(mapStateToProps, {alignFiles})(TaskComponent);

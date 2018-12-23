@@ -84,14 +84,14 @@ class TaskComponent extends Component<
     //this.setState({file:e.target.files[0]});
     var test = trimFiles(diagramStore.getState().entity[0]);
     test.then(res => {
-        //console.log(res.data.isTrimCompleted);
+        console.log(res.data);
         if(res.data.isTrimCompleted){
           this.setState({isTrimCompleted: true});
-          var file1Name = res.data.file1.replace(".", "_")+'c.html';
-          var file2Name = res.data.file2.replace(".", "_")+'c.html';
+           var file1Name = res.data.file1;
+          var file2Name = res.data.file2;
           //console.log(file1Name);
-          window.open("http://localhost:3000/Fastqc/"+file1Name);
-          window.open("http://localhost:3000/Fastqc/"+file2Name);
+          window.open("http://localhost:3000/trimmed_result/"+file1Name);
+          window.open("http://localhost:3000/trimmed_result/"+file2Name);
         } else {
           this.setState({isTrimCompleted: false});
         }

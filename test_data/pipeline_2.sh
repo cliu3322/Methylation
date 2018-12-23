@@ -1,20 +1,22 @@
 #!/bin/bash
 
 ## raw reads fastqc
-fastqc -o /mnt/Bioinfo_Student/Ting_Gong/EpiQC_data/NYGC_NA12878_A/Fastqc/ NA12878v1-Bstag_ACTGAGCG_H3Y7GALXX_L001_001.R1.fastq NA12878v1-Bstag_ACTGAGCG_H3Y7GALXX_L001_001.R2.fastq NA12878v2-Bstag_ACTGAGCG_H3Y7GALXX_L002_001.R1.fastq NA12878v2-Bstag_ACTGAGCG_H3Y7GALXX_L002_001.R2.fastq 
+fastqc -o /mnt/Bioinfo_Student/Ting_Gong/EpiQC_data/NYGC_NA12878_A/Fastqc/ NA12878v1-Bstag_ACTGAGCG_H3Y7GALXX_L001_001.R1.fastq NA12878v1-Bstag_ACTGAGCG_H3Y7GALXX_L001_001.R2.fastq NA12878v2-Bstag_ACTGAGCG_H3Y7GALXX_L002_001.R1.fastq NA12878v2-Bstag_ACTGAGCG_H3Y7GALXX_L002_001.R2.fastq
 
 ## trimmomatic to remove adapters
-java -jar trimmomatic-0.36.jar PE NA12878v1-Bstag_ACTGAGCG_H3Y7GALXX_L001_001.R1.fastq NA12878v1-Bstag_ACTGAGCG_H3Y7GALXX_L001_001.R2.fastq ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
+java -jar trimmomatic-0.36.jar PE ../uploads/test1.fastq ../uploads/test2.fastq ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
 
 ## trim galore: auto detect adapters & trim low quality reads (input and output directory should be different)
 output="/mnt/Bioinfo_Student/Ting_Gong/EpiQC_data/08-22-17_Sample_HG002/Trim_galore/"
 input="/mnt/Bioinfo_Student/Ting_Gong/EpiQC_data/08-22-17_Sample_HG002/"
 trim_galore -q 20 --stringency 5 --paired --length 20 -o ${output} ${input}HG002_TGCAGCTA_HHLY2ALXX_L001_001.R1.fastq ${input}HG002_TGCAGCTA_HHLY2ALXX_L001_001.R2.fastq
 
+
+##?question
 trim_galore --paired --trim1 HG003_TAAGGCGA_HHLY2ALXX_L002_001.R1.fastq HG003_TAAGGCGA_HHLY2ALXX_L002_001.R2.fastq
 
 ## trimmed reads fastqc
-fastqc -o /mnt/Bioinfo_Student/Ting_Gong/EpiQC_data/NYGC_NA12878_A/Fastqc_trimmed/ NA12878v1-Bstag_ACTGAGCG_H3Y7GALXX_L001_001.R1_val_1.fq NA12878v1-Bstag_ACTGAGCG_H3Y7GALXX_L001_001.R2_val_2.fq 
+fastqc -o /mnt/Bioinfo_Student/Ting_Gong/EpiQC_data/NYGC_NA12878_A/Fastqc_trimmed/ NA12878v1-Bstag_ACTGAGCG_H3Y7GALXX_L001_001.R1_val_1.fq NA12878v1-Bstag_ACTGAGCG_H3Y7GALXX_L001_001.R2_val_2.fq
 
 ## Genome preparation
 bismark_genome_preparation --bowtie2 /path/to/genome/
@@ -46,7 +48,7 @@ samtools view -@ 4 -b -h -F 0x04 -F 0x400 -F 512 -q 1 -f 0x02 L002_001.R2.test_v
 bismark_methylation_extractor --bedGraph --gzip NYGC_NA12878_A_1_pe.mapped.bam
 
 ## Picard sortsam
-picard -Xmx32G SortSam INPUT=NYGC_NA12878_A_1_pe.deduplicated.bam OUTPUT=NYGC_NA12878_A_1_pe.deduplicated_sort.bam SORT_ORDER=coordinate 
+picard -Xmx32G SortSam INPUT=NYGC_NA12878_A_1_pe.deduplicated.bam OUTPUT=NYGC_NA12878_A_1_pe.deduplicated_sort.bam SORT_ORDER=coordinate
 
 ## Add downsampling
 samtools view -s 0.05 -b -h NYGC_NA12878_A_1_pe.deduplicated_sort.bam > NYGC_NA12878_A_1_pe.deduplicated_5.bam
@@ -74,4 +76,3 @@ bismark_methylation_extractor --bedGraph --gzip NYGC_NA12878_A_1_pe.deduplicated
 
 ## MethylDackel, after sorted and creat index file
 MethylDackel extract hg38.fa HG002_1_bwameth.deduplicated_sort.bam
-

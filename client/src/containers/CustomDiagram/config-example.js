@@ -42,7 +42,7 @@ const customEntities = {
     icon: taskIcon,
   },
   Align: {
-    component: Trim,
+    component: Align,
     icon: taskIcon,
   },
 };

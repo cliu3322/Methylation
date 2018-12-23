@@ -47,7 +47,7 @@ const model: EntityState = [
   },
   {
     id: 'Align',
-    type: 'Event',
+    type: 'Align',
     width: 125,
     height: 75,
     x: 600,
