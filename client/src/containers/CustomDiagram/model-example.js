@@ -36,6 +36,9 @@ const model: EntityState = [
     x: 300,
     y: 0,
     name: 'trim',
+    isCompleted: false,
+    fqFile1:'',
+    fqFile2:'',
     linksTo: [
       {
         target: 'Align',

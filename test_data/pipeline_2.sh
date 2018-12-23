@@ -21,11 +21,17 @@ fastqc -o /mnt/Bioinfo_Student/Ting_Gong/EpiQC_data/NYGC_NA12878_A/Fastqc_trimme
 ## Genome preparation
 bismark_genome_preparation --bowtie2 /path/to/genome/
 
+
+## if we need this???
+bismark_genome_preparation --bowtie2 ../../../Methylation/hg38/
+
 ## Creat test data (10000 reads) to see the direction of the paired fastq files
 seqtk sample -s100 input.fastq 10000 > output.fastq
 
 ## Use Bismark to test the sequence direction
 bismark /mnt/Bioinfo_Student/Ting_Gong/hg19 -o test -1 L002_001.R1.test_val_1.fq -2 L002_001.R2.test_val_2.fq --parallel 4 -p 4 --score_min L,0,-0.6 --non_directional
+bismark ../../../Methylation/hg38/ -o test -1 L002_001.R1.test_val_1.fq -2 L002_001.R2.test_val_2.fq --parallel 4 -p 4 --score_min L,0,-0.6 --non_directional
+
 
 ## Alignment-Bismark after test for direction
 bismark /mnt/Bioinfo_Student/Ting_Gong/hg38 -o bismark -1 L002_001.R2.test_val_2.fq -2 L002_001.R1.test_val_1.fq --parallel 4 -p 4 --score_min L,0,-0.6 -X 1000

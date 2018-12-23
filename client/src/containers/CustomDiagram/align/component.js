@@ -82,7 +82,8 @@ class TaskComponent extends Component<
     e.preventDefault();
 
     //this.setState({file:e.target.files[0]});
-    var test = alignFiles(diagramStore.getState().entity[0]);
+    console.log(diagramStore.getState().entity[1])
+    var test = alignFiles(diagramStore.getState().entity[1]);
     test.then(res => {
         console.log(res);
         if(res.data.isAlignCompleted){
@@ -92,7 +93,6 @@ class TaskComponent extends Component<
           this.setState({isAlignCompleted: false});
         }
     })
-  //  console.log(storeMain.getState());
 
   }
 

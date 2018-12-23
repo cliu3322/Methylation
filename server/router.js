@@ -95,6 +95,8 @@ export default function (app) {
             res.status(201).json({
               file1:JSON.parse(req.query.filesName).file1.replace(".fastq", "_val_1_fastqc.html"),
               file2:JSON.parse(req.query.filesName).file2.replace(".fastq", "_val_2_fastqc.html"),
+              fqFilesName1:JSON.parse(req.query.filesName).file1.replace(".fastq", "_val_1.fq"),
+              fqFilesName2:JSON.parse(req.query.filesName).file2.replace(".fastq", "_val_2.fq"),
               result1:stdout1,
               result2:stdout2,
               result3:stdout3,
@@ -108,10 +110,16 @@ export default function (app) {
   });
 
   apiRoutes.get('/align', function (req, res) {
-    console.log('got post');
-    exec('cd Trimmomatic-0.36 && java -jar trimmomatic-0.36.jar PE ../uploads/'+ JSON.parse(req.query.filesName).file1+' ../uploads/'+JSON.parse(req.query.filesName).file2+' ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36',
+    console.log('bismark ../../../Methylation/hg38/ -o bismark '+
+    './result/trim_galor/'+JSON.parse(req.query.filesName).fqFile1+' q -2 '+
+    './result/trim_galor/'+JSON.parse(req.query.filesName).fqFile2+' --parallel 4 -p 4 --score_min L,0,-0.6 -X 1000');
+
+    console.log(JSON.parse(req.query.filesName))
+    exec('bismark ../../../Methylation/hg38/ -o bismark '+
+    './result/trim_galor/'+JSON.parse(req.query.filesName).fqFile1+' q -2 '+
+    './result/trim_galor/'+JSON.parse(req.query.filesName).fqFile2+' --parallel 4 -p 4 --score_min L,0,-0.6 -X 1000',
     (err, stdout, stderr) => {
-      console.log('got return');
+      console.log('go align');
       if (err) {
         console.error(`exec error: ${err}`);
         return;

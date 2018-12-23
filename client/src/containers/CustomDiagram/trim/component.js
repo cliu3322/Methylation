@@ -8,10 +8,11 @@ import Button from '../../../components/uielements/button';
 import type { DiagComponentProps } from 'react-flow-diagram';
 import {trimFiles} from '../../../redux/fastqcuploader/trimActions.js';
 import {
-  store as diagramStore
+  store as diagramStore, setEntities
 } from 'react-flow-diagram';
 import Form from '../../../components/uielements/form';
 import Spin from '../spin.style';
+import model from '../model-example';
 //import {store as storeMain} from '../../../redux/store.js';
 
 
@@ -88,7 +89,7 @@ class TaskComponent extends Component<
     var test = trimFiles(diagramStore.getState().entity[0]);
     test.then(res => {
       this.setState({isloading: false});
-      console.log(res.data);
+      //console.log(res.data);
       if(res.data.isTrimCompleted){
         this.setState({isTrimCompleted: true});
          var file1Name = res.data.file1;
@@ -96,6 +97,12 @@ class TaskComponent extends Component<
         //console.log(file1Name);
         window.open("http://localhost:3000/trimmed_result/"+file1Name);
         window.open("http://localhost:3000/trimmed_result/"+file2Name);
+
+        model[1].isCompleted = true;
+        model[1].fqFile1 = res.data.fqFilesName1;
+        model[1].fqFile2 = res.data.fqFilesName2;
+        diagramStore.dispatch(setEntities(model));
+
       } else {
         this.setState({isTrimCompleted: false});
       }
