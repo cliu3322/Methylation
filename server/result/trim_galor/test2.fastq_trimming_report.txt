@@ -16,7 +16,7 @@ Minimum required sequence length for both reads before a sequence pair gets remo
 This is cutadapt 1.18 with Python 3.6.7
 Command line parameters: -f fastq -e 0.1 -q 20 -O 5 -a CTGTCTCTTATA ./uploads/test2.fastq
 Processing reads on 1 core in single-end mode ...
-Finished in 0.14 s (14 us/read; 4.16 M reads/minute).
+Finished in 0.16 s (16 us/read; 3.65 M reads/minute).
 
 === Summary ===
 

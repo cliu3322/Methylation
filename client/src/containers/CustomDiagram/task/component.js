@@ -22,7 +22,7 @@ const FormItem = Form.Item;
  * ==================================== */
 
 const TaskStyle = style.div`
-  background-color: ${props => (props.isCompleted ? 'green' : '#fff')};
+  background-color: ${props => (props.isCompleted ? 'lawngreen' : 'red')};
   display: flex;
   flex-flow: row nowrap;
   align-items: ${props => (props.isEditing ? 'stretch' : 'center')};

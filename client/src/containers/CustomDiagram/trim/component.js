@@ -11,6 +11,7 @@ import {
   store as diagramStore
 } from 'react-flow-diagram';
 import Form from '../../../components/uielements/form';
+import Spin from '../spin.style';
 //import {store as storeMain} from '../../../redux/store.js';
 
 
@@ -22,7 +23,7 @@ const FormItem = Form.Item;
  * ==================================== */
 
 const TaskStyle = style.div`
-  background-color: ${props => (props.isTrimCompleted ? 'green' : '#fff')};
+  background-color: ${props => (props.isTrimCompleted ? 'lawngreen' : 'red')};
   display: flex;
   flex-flow: row nowrap;
   align-items:  center;
@@ -73,6 +74,7 @@ class TaskComponent extends Component<
     this.state = {
       name: this.props.model.name,
       isTrimCompleted: false,
+      isloading:false,
     };
     this.click= this.click.bind(this)
   }
@@ -82,19 +84,21 @@ class TaskComponent extends Component<
     e.preventDefault();
 
     //this.setState({file:e.target.files[0]});
+    this.setState({isloading: true});
     var test = trimFiles(diagramStore.getState().entity[0]);
     test.then(res => {
-        console.log(res.data);
-        if(res.data.isTrimCompleted){
-          this.setState({isTrimCompleted: true});
-           var file1Name = res.data.file1;
-          var file2Name = res.data.file2;
-          //console.log(file1Name);
-          window.open("http://localhost:3000/trimmed_result/"+file1Name);
-          window.open("http://localhost:3000/trimmed_result/"+file2Name);
-        } else {
-          this.setState({isTrimCompleted: false});
-        }
+      this.setState({isloading: false});
+      console.log(res.data);
+      if(res.data.isTrimCompleted){
+        this.setState({isTrimCompleted: true});
+         var file1Name = res.data.file1;
+        var file2Name = res.data.file2;
+        //console.log(file1Name);
+        window.open("http://localhost:3000/trimmed_result/"+file1Name);
+        window.open("http://localhost:3000/trimmed_result/"+file2Name);
+      } else {
+        this.setState({isTrimCompleted: false});
+      }
     })
   //  console.log(storeMain.getState());
 
@@ -113,9 +117,10 @@ class TaskComponent extends Component<
         />
         <Form>
           <FormItem>
-            <Button type="primary" style={{width: 10 + 'em'}} onClick={this.click} >
+            <Button type="primary" style={{width: 10 + 'em'}} onClick={this.click} disabled={this.state.isloading}>
               Trim
             </Button>
+            {this.state.isloading? <Spin></Spin>: null}
           </FormItem>
         </Form>
       </div>
