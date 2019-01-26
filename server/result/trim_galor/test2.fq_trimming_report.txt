@@ -1,0 +1,42 @@
+
+SUMMARISING RUN PARAMETERS
+==========================
+Input filename: ./uploads/test2.fq
+Trimming mode: paired-end
+Trim Galore version: 0.5.0
+Cutadapt version: 1.18
+Quality Phred score cutoff: 20
+Quality encoding type selected: ASCII+33
+Adapter sequence: 'AGATCGGAAGAGC' (Illumina TruSeq, Sanger iPCR; default (inconclusive auto-detection))
+Maximum trimming error rate: 0.1 (default)
+Minimum required adapter overlap (stringency): 5 bp
+Minimum required sequence length for both reads before a sequence pair gets removed: 20 bp
+
+
+This is cutadapt 1.18 with Python 3.6.7
+Command line parameters: -f fastq -e 0.1 -q 20 -O 5 -a AGATCGGAAGAGC ./uploads/test2.fq
+Processing reads on 1 core in single-end mode ...
+Finished in 0.02 s (16 us/read; 3.65 M reads/minute).
+
+=== Summary ===
+
+Total reads processed:                   1,000
+Reads with adapters:                         0 (0.0%)
+Reads written (passing filters):         1,000 (100.0%)
+
+Total basepairs processed:       144,469 bp
+Quality-trimmed:                     508 bp (0.4%)
+Total written (filtered):        143,961 bp (99.6%)
+
+=== Adapter 1 ===
+
+Sequence: AGATCGGAAGAGC; Type: regular 3'; Length: 13; Trimmed: 0 times.
+
+
+RUN STATISTICS FOR INPUT FILE: ./uploads/test2.fq
+=============================================
+1000 sequences processed in total
+
+Total number of sequences analysed for the sequence pair length validation: 1000
+
+Number of sequence pairs removed because at least one read was shorter than the length cutoff (20 bp): 0 (0.00%)

@@ -67,7 +67,7 @@ const model: EntityState = [
   },
   {
     id: 'Filter',
-    type: 'Event',
+    type: 'Filter',
     width: 125,
     height: 75,
     x: 800,
@@ -84,7 +84,7 @@ const model: EntityState = [
   },
   {
     id: 'Extract',
-    type: 'Event',
+    type: 'ExtractPrimaryReads',
     width: 125,
     height: 75,
     x: 800,

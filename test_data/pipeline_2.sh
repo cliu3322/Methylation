@@ -65,7 +65,7 @@ samtools view -s 0.3 -b -h NYGC_NA12878_A_1_pe.deduplicated_sort.bam > NYGC_NA12
 ## Calculate coverage of downsampling
 ## https://github.com/arq5x/bedtools-protocols/blob/master/bedtools.md
 bedtools genomecov -ibam NA19146.bam > NA19146.coverage.hist.txt
-
+????????????????????????
 ## Plot Using goleft and SeqMonk
 ## Create Bai file from Bam file
 samtools index NYGC_NA12878_A_1_pe.deduplicated_5.bam
@@ -74,6 +74,15 @@ samtools index NYGC_NA12878_A_1_pe.deduplicated_20.bam
 samtools index NYGC_NA12878_A_1_pe.deduplicated_30.bam
 ## goleft
 goleft indexcov --d /mnt/Bioinfo_Student/Ting_Gong/EpiQC_data/NYGC_NA12878_A/DownSamplingCoverage/NYGC_NA12878_A_1/ NYGC_NA12878_A_1_pe.deduplicated_5.bam NYGC_NA12878_A_1_pe.deduplicated_10.bam NYGC_NA12878_A_1_pe.deduplicated_20.bam NYGC_NA12878_A_1_pe.deduplicated_30.bam NYGC_NA12878_A_1_pe.deduplicated_sort.bam
+goleft indexcov --d /Users/chunyiliu/projects/Methylation/server/ NYGC_NA12878_A_1_pe.deduplicated_5.bam NYGC_NA12878_A_1_pe.deduplicated_10.bam NYGC_NA12878_A_1_pe.deduplicated_20.bam NYGC_NA12878_A_1_pe.deduplicated_30.bam NYGC_NA12878_A_1_pe.deduplicated_sort.bam
+???????????????
+2019/01/25 14:35:27 no reference stats found for 2th reference
+2019/01/25 14:35:27 no reference stats found for 15th reference
+2019/01/25 14:35:27 no reference stats found for 17th reference
+2019/01/25 14:35:27 no reference stats found for 19th reference
+2019/01/25 14:35:27 no reference stats found for 20th reference
+2019/01/25 14:35:27 no reference stats found for 23th reference
+2019/01/25 14:35:27 no reference stats found for 24th reference
 
 ## Methylation extract of downsampling files
 ## Unsorted downsampling files

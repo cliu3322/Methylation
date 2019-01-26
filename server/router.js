@@ -75,6 +75,27 @@ export default function (app) {
     });
   });
 
+  apiRoutes.get('/extractPrimaryReads', function (req, res) {
+//samtools view -b -F 4 ./result/duplicate_result/test2_bismark_bt2_pe.deduplicated.bam > ./result/extractPrimaryReads_result/NYGC_NA12878_A_1_pe.mapped.bam
+
+    exec('samtools view -@ 4 -b -h -F 0x04 -F 0x400 -F 512 -q 1 -f 0x02 ./result/filter_result/test2_bismark_bt2_pe.bam > ./result/extractPrimaryReads_result/L002_001.R2.test_val_2_bismark_bt2_pe.filter.bam', (err, stdout, stderr) => {
+      res.status(201).json({
+        fileName: 'L002_001.R2.test_val_2_bismark_bt2_pe.filter.bam',
+        isExtractPrimaryReads:true,
+      })
+    });
+  });
+
+  apiRoutes.get('/deplicate', function (req, res) {
+
+    exec('deduplicate_bismark --bam ./result/align_result/test2_bismark_bt2_pe.bam --output_dir ./result/duplicate_result/', (err, stdout, stderr) => {
+      res.status(201).json({
+        fileName: 'L002_001.R2.test_val_2_bismark_bt2_pe.filter.bam',
+        isExtractPrimaryReads:true,
+      })
+    });
+  });
+
   apiRoutes.get('/trim', function (req, res) {
     exec('fastqc -o ./result/Fastqc/ ./uploads/'+ JSON.parse(req.query.filesName).file1+' ./uploads/'+JSON.parse(req.query.filesName).file2+' NA12878v2-Bstag_ACTGAGCG_H3Y7GALXX_L002_001.R1.fastq NA12878v2-Bstag_ACTGAGCG_H3Y7GALXX_L002_001.R2.fastq ',
     (err, stdout1, stderr) => {

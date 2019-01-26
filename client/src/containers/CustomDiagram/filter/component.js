@@ -22,7 +22,7 @@ const FormItem = Form.Item;
  * ==================================== */
 
 const TaskStyle = style.div`
-  background-color: ${props => (props.isAlignCompleted ? 'green' : '#fff')};
+  background-color: ${props => (props.isFilterCompleted ? 'green' : '#fff')};
   display: flex;
   flex-flow: row nowrap;
   align-items:  center;
@@ -40,13 +40,13 @@ const Name = style.span`
 
 export type TaskProps = DiagComponentProps & {
   name: string,
-  isAlignCompleted: boolean,
+  isFilterCompleted: boolean,
 };
 const Task = (props: TaskProps) => (
   <TaskStyle
     width={props.model.width}
     height={props.model.height}
-    isAlignCompleted={props.isAlignCompleted}
+    isFilterCompleted={props.isFilterCompleted}
   >
     <Name
       style={{ display: 'block' }}
@@ -72,7 +72,7 @@ class TaskComponent extends Component<
     //console.log(this.state)
     this.state = {
       name: this.props.model.name,
-      isAlignCompleted: false,
+      isFilterCompleted: false,
     };
     this.click= this.click.bind(this)
   }
@@ -86,26 +86,26 @@ class TaskComponent extends Component<
     // var test = alignFiles(diagramStore.getState().entity[1]);
     // test.then(res => {
     //     console.log(res);
-    //     if(res.data.isAlignCompleted){
-    //       this.setState({isAlignCompleted: true});
+    //     if(res.data.isFilterCompleted){
+    //       this.setState({isFilterCompleted: true});
     //
     //     } else {
-    //       this.setState({isAlignCompleted: false});
+    //       this.setState({isFilterCompleted: false});
     //     }
     // })
-    this.setState({isAlignCompleted: true});
+    this.setState({isFilterCompleted: true});
   }
 
   render() {
     // const {
-    //   isAlignCompleted
+    //   isFilterCompleted
     // } = this.props;
     return (
       <div>
         <Task
           {...this.props}
           name={this.state.name}
-          isAlignCompleted = {this.state.isAlignCompleted}
+          isFilterCompleted = {this.state.isFilterCompleted}
         />
         <Form>
           <FormItem>

@@ -6,11 +6,13 @@ import style from 'styled-components';
 
 import Button from '../../../components/uielements/button';
 import type { DiagComponentProps } from 'react-flow-diagram';
-import {alignFiles} from '../../../redux/fastqcuploader/alignActions.js';
+import {extractPrimaryReadsFiles} from '../../../redux/fastqcuploader/extractPrimaryReadsActions.js';
 import {
-  store as diagramStore
+  store as diagramStore, setEntities
 } from 'react-flow-diagram';
 import Form from '../../../components/uielements/form';
+import Spin from '../spin.style';
+import model from '../model-example';
 //import {store as storeMain} from '../../../redux/store.js';
 
 
@@ -22,7 +24,7 @@ const FormItem = Form.Item;
  * ==================================== */
 
 const TaskStyle = style.div`
-  background-color: ${props => (props.isAlignCompleted ? 'green' : '#fff')};
+  background-color: ${props => (props.isExtractPrimaryReads ? 'lawngreen' : 'red')};
   display: flex;
   flex-flow: row nowrap;
   align-items:  center;
@@ -40,13 +42,13 @@ const Name = style.span`
 
 export type TaskProps = DiagComponentProps & {
   name: string,
-  isAlignCompleted: boolean,
+  isExtractPrimaryReads: boolean,
 };
 const Task = (props: TaskProps) => (
   <TaskStyle
     width={props.model.width}
     height={props.model.height}
-    isAlignCompleted={props.isAlignCompleted}
+    isExtractPrimaryReads={props.isExtractPrimaryReads}
   >
     <Name
       style={{ display: 'block' }}
@@ -72,7 +74,8 @@ class TaskComponent extends Component<
     //console.log(this.state)
     this.state = {
       name: this.props.model.name,
-      isAlignCompleted: false,
+      isExtractPrimaryReads: false,
+      isloading:false,
     };
     this.click= this.click.bind(this)
   }
@@ -82,36 +85,49 @@ class TaskComponent extends Component<
     e.preventDefault();
 
     //this.setState({file:e.target.files[0]});
-    console.log(diagramStore.getState().entity[1])
-    // var test = alignFiles(diagramStore.getState().entity[1]);
-    // test.then(res => {
-    //     console.log(res);
-    //     if(res.data.isAlignCompleted){
-    //       this.setState({isAlignCompleted: true});
-    //
-    //     } else {
-    //       this.setState({isAlignCompleted: false});
-    //     }
-    // })
-    this.setState({isAlignCompleted: true});
+    this.setState({isloading: true});
+    var test = extractPrimaryReadsFiles(diagramStore.getState().entity[0]);
+    test.then(res => {
+      this.setState({isloading: false});
+      console.log(res.data);
+      if(res.data.isExtractPrimaryReads){
+        this.setState({isExtractPrimaryReads: true});
+         var file1Name = res.data.file1;
+        var file2Name = res.data.file2;
+        //console.log(file1Name);
+        window.open("http://localhost:3000/trimmed_result/"+file1Name);
+        window.open("http://localhost:3000/trimmed_result/"+file2Name);
+
+        model[1].isCompleted = true;
+        model[1].fqFile1 = res.data.fqFilesName1;
+        model[1].fqFile2 = res.data.fqFilesName2;
+        diagramStore.dispatch(setEntities(model));
+
+      } else {
+        this.setState({isExtractPrimaryReads: false});
+      }
+    })
+  //  console.log(storeMain.getState());
+
   }
 
   render() {
     // const {
-    //   isAlignCompleted
+    //   isExtractPrimaryReads
     // } = this.props;
     return (
       <div>
         <Task
           {...this.props}
           name={this.state.name}
-          isAlignCompleted = {this.state.isAlignCompleted}
+          isExtractPrimaryReads = {this.state.isExtractPrimaryReads}
         />
         <Form>
           <FormItem>
-            <Button type="primary" style={{width: 10 + 'em'}} onClick={this.click} >
-              Align
+            <Button type="primary" style={{width: 10 + 'em'}} onClick={this.click} disabled={this.state.isloading}>
+              Extract
             </Button>
+            {this.state.isloading? <Spin></Spin>: null}
           </FormItem>
         </Form>
       </div>
@@ -129,4 +145,4 @@ function mapStateToProps(state) {
 
   };
 }
-export default connect(mapStateToProps, {alignFiles})(TaskComponent);
+export default connect(mapStateToProps, {extractPrimaryReadsFiles})(TaskComponent);
