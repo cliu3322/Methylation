@@ -17,17 +17,36 @@ export default function (app) {
 
   var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, './uploads/')
+      cb(null, '../uploads/')
     },
     filename: function (req, file, cb) {
-      cb(null, file.originalname)
+      cb(null, 'test1.fastq')
     }
   })
 
   // var upload = multer({ storage: storage })
 
-  var upload = multer({
+  var upload1 = multer({
     storage: storage,
+    limits: {
+      fileSize: 1024 * 1024 * 5 // max 5MB file
+    }
+  });
+
+
+  var storage2 = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, '../uploads/')
+    },
+    filename: function (req, file, cb) {
+      cb(null, 'test2.fastq')
+    }
+  })
+
+  // var upload = multer({ storage: storage })
+
+  var upload2 = multer({
+    storage: storage2,
     limits: {
       fileSize: 1024 * 1024 * 5 // max 5MB file
     }
@@ -37,7 +56,15 @@ export default function (app) {
 
 
 
-  apiRoutes.post("/uploadFile", upload.single('file'), function (req, res, next) {
+  apiRoutes.post("/uploadFile1", upload1.single('file'), function (req, res, next) {
+    res.status(201).json({
+      message: "File uploaded successfully",
+      fileName:req.file.originalname
+    });
+  });
+
+
+  apiRoutes.post("/uploadFile2", upload2.single('file'), function (req, res, next) {
     res.status(201).json({
       message: "File uploaded successfully",
       fileName:req.file.originalname

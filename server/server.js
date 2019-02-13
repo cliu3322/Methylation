@@ -108,10 +108,3 @@ mongoose.connect(Config.database, (mongooseErr) => {
     router(app);
   }
 });
-
-const server =  app.listen(3000, '0.0.0.0', function() {
-  console.log('Listening to port:  ' + 3000);
-});
-console.log(`Your server is running on port ${Config.port}.`);
-
-module.exports = server;

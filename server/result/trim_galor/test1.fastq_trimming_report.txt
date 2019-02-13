@@ -13,10 +13,10 @@ Minimum required adapter overlap (stringency): 5 bp
 Minimum required sequence length for both reads before a sequence pair gets removed: 20 bp
 
 
-This is cutadapt 1.18 with Python 3.6.7
+This is cutadapt 1.18 with Python 3.6.6
 Command line parameters: -f fastq -e 0.1 -q 20 -O 5 -a CTGTCTCTTATA ./uploads/test1.fastq
 Processing reads on 1 core in single-end mode ...
-Finished in 0.19 s (19 us/read; 3.21 M reads/minute).
+Finished in 0.18 s (18 us/read; 3.31 M reads/minute).
 
 === Summary ===
 
