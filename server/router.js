@@ -10,7 +10,7 @@ const fs = require('fs');
 export default function (app) {
 
 
-  app.use('/trimmed_result', express.static('result/trimmed_result'))
+  app.use('/result', express.static('../result/'))
 
   const apiRoutes = express.Router();
 
@@ -124,36 +124,49 @@ export default function (app) {
   });
 
   apiRoutes.get('/trim', function (req, res) {
-    exec('fastqc -o ./result/Fastqc/ ./uploads/'+ JSON.parse(req.query.filesName).file1+' ./uploads/'+JSON.parse(req.query.filesName).file2+' NA12878v2-Bstag_ACTGAGCG_H3Y7GALXX_L002_001.R1.fastq NA12878v2-Bstag_ACTGAGCG_H3Y7GALXX_L002_001.R2.fastq ',
-    (err, stdout1, stderr) => {
-      exec('cd Trimmomatic-0.36 && java -jar trimmomatic-0.36.jar PE ../uploads/'+ JSON.parse(req.query.filesName).file1+' ../uploads/'+JSON.parse(req.query.filesName).file2+' ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 && cd ..',
-      (err, stdout2, stderr) => {
-        exec('trim_galore -q 20 --stringency 5 --paired --length 20 -o ./result/trim_galor/ '+
-          './uploads/'+JSON.parse(req.query.filesName).file1+
-          ' ./uploads/'+JSON.parse(req.query.filesName).file2,
-        (err, stdout3, stderr) => {
-          // exec('trim_galore --paired --trim1 '+
-          //   './uploads/'+JSON.parse(req.query.filesName).file1+
-          //   ' ./uploads/'+JSON.parse(req.query.filesName).file2,
-          exec('fastqc -o ./result/trimmed_result/ ./result/trim_galor/'+
-          JSON.parse(req.query.filesName).file1.replace(".fastq", "_val_1.fq")+
-          ' ./result/trim_galor/'+
-          JSON.parse(req.query.filesName).file2.replace(".fastq", "_val_2.fq"),
-          (err, stdout4, stderr) => {
-            res.status(201).json({
-              file1:JSON.parse(req.query.filesName).file1.replace(".fastq", "_val_1_fastqc.html"),
-              file2:JSON.parse(req.query.filesName).file2.replace(".fastq", "_val_2_fastqc.html"),
-              fqFilesName1:JSON.parse(req.query.filesName).file1.replace(".fastq", "_val_1.fq"),
-              fqFilesName2:JSON.parse(req.query.filesName).file2.replace(".fastq", "_val_2.fq"),
-              result1:stdout1,
-              result2:stdout2,
-              result3:stdout3,
-              result4:stdout4,
-              isTrimCompleted:true,
+
+    exec('fastqc -o ../result/Fastqc/ ../uploads/'+ JSON.parse(req.query.filesName).file1+' ../uploads/'+JSON.parse(req.query.filesName).file2+' NA12878v2-Bstag_ACTGAGCG_H3Y7GALXX_L002_001.R1.fastq NA12878v2-Bstag_ACTGAGCG_H3Y7GALXX_L002_001.R2.fastq ',
+    (err1, stdout1, stderr1) => {
+      console.log('stdout1',stdout1)
+      console.log('stderr1',stderr1)
+      console.log('err',err1)
+
+      if (stderr1) {
+        console.log(stderr1)
+        res.send({
+           err: stderr1
+        });
+      }
+      else {
+        exec('cd Trimmomatic-0.36 && java -jar trimmomatic-0.36.jar PE ../uploads/'+ JSON.parse(req.query.filesName).file1+' ../uploads/'+JSON.parse(req.query.filesName).file2+' ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 && cd ..',
+        (err, stdout2, stderr) => {
+          exec('trim_galore -q 20 --stringency 5 --paired --length 20 -o ../result/trim_galor/ '+
+            '../uploads/'+JSON.parse(req.query.filesName).file1+
+            ' ../uploads/'+JSON.parse(req.query.filesName).file2,
+          (err, stdout3, stderr) => {
+            // exec('trim_galore --paired --trim1 '+
+            //   './uploads/'+JSON.parse(req.query.filesName).file1+
+            //   ' ./uploads/'+JSON.parse(req.query.filesName).file2,
+            exec('fastqc -o ../result/trimmed_result/ ./result/trim_galor/'+
+            JSON.parse(req.query.filesName).file1.replace(".fastq", "_val_1.fq")+
+            ' ../result/trim_galor/'+
+            JSON.parse(req.query.filesName).file2.replace(".fastq", "_val_2.fq"),
+            (err, stdout4, stderr) => {
+              res.status(201).json({
+                file1:JSON.parse(req.query.filesName).file1.replace(".fastq", "_val_1_fastqc.html"),
+                file2:JSON.parse(req.query.filesName).file2.replace(".fastq", "_val_2_fastqc.html"),
+                fqFilesName1:JSON.parse(req.query.filesName).file1.replace(".fastq", "_val_1.fq"),
+                fqFilesName2:JSON.parse(req.query.filesName).file2.replace(".fastq", "_val_2.fq"),
+                result1:stdout1,
+                result2:stdout2,
+                result3:stdout3,
+                result4:stdout4,
+                isTrimCompleted:true,
+              });
             });
           });
         });
-      });
+      }
     });
   });
 

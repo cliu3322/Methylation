@@ -23,21 +23,29 @@ class FormTrim extends Component {
 
   click(e){
     e.preventDefault();
-    var result = trimFiles();
+    var result = trimFiles({file1:'test1.fastq',file2:'test2.fastq'});
     result.then(res => {
-      this.setState({trimCompleted: true});
-      //console.log(res.data);
-      if(res.data.isTrimCompleted){
-        this.setState({isTrimCompleted: true});
-         var file1Name = res.data.file1;
-        var file2Name = res.data.file2;
-        //console.log(file1Name);
-        window.open("http://localhost:3000/trimmed_result/"+file1Name);
-        window.open("http://localhost:3000/trimmed_result/"+file2Name);
-
-      } else {
-        this.setState({isTrimCompleted: false});
+      if (res.data.err) {
+        console.log(res)
+        message.error(res.data.err);
       }
+      else {
+        this.setState({trimCompleted: true});
+        //console.log(res.data);
+        if(res.data.isTrimCompleted){
+          this.setState({isTrimCompleted: true});
+           var file1Name = res.data.file1;
+          var file2Name = res.data.file2;
+          //console.log(file1Name);
+          window.open("http://localhost:3000/trimmed_result/"+file1Name);
+          window.open("http://localhost:3000/trimmed_result/"+file2Name);
+
+        } else {
+          this.setState({isTrimCompleted: false});
+        }
+      }
+
+
     })
   //  console.log(storeMain.getState());
 
