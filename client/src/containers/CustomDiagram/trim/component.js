@@ -6,7 +6,7 @@ import style from 'styled-components';
 
 import Button from '../../../components/uielements/button';
 import type { DiagComponentProps } from 'react-flow-diagram';
-import {trimFiles} from '../../../redux/fastqcuploader/trimActions.js';
+import {trimFiles} from '../../../redux/actions/trimActions.js';
 import {
   store as diagramStore, setEntities
 } from 'react-flow-diagram';

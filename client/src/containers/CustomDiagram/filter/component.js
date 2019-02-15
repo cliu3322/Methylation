@@ -6,7 +6,7 @@ import style from 'styled-components';
 
 import Button from '../../../components/uielements/button';
 import type { DiagComponentProps } from 'react-flow-diagram';
-import {alignFiles} from '../../../redux/fastqcuploader/alignActions.js';
+import {alignFiles} from '../../../redux/actions/alignActions.js';
 import {
   store as diagramStore
 } from 'react-flow-diagram';

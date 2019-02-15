@@ -6,7 +6,7 @@ import style from 'styled-components';
 
 import Button from '../../../components/uielements/button';
 import type { DiagComponentProps } from 'react-flow-diagram';
-import {extractPrimaryReadsFiles} from '../../../redux/fastqcuploader/extractPrimaryReadsActions.js';
+import {extractPrimaryReadsFiles} from '../../../redux/actions/extractPrimaryReadsActions.js';
 import {
   store as diagramStore, setEntities
 } from 'react-flow-diagram';

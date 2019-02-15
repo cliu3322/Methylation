@@ -3,6 +3,7 @@ import LayoutContentWrapper from '../components/utility/layoutWrapper';
 import { Steps, Button, message,  Row, Col} from 'antd';
 import FormUpload from './Steps/FormUpload';
 import FormTrim from './Steps/FormTrim';
+import FormAlign from './Steps/FormAlign';
 
 
 const Step = Steps.Step;
@@ -15,7 +16,7 @@ const steps = [{
   content: (<FormTrim/>),
 }, {
   title: 'Alignment',
-  content: 'Last-content',
+  content: (<FormAlign/>),
 }, {
   title: 'Filter',
   content: 'Second-content',

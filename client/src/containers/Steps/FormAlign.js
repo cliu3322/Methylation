@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Form, Button, message } from 'antd';
-import {trimFiles} from '../../redux/actions/trimActions.js';
+import {alignFiles} from '../../redux/actions/alignActions.js';
 
 
 const FormItem = Form.Item;
 
 
-class FormTrim extends Component {
+class FormAlignment extends Component {
 
 
   constructor(props) {
     super(props);
     this.state = {
-      trimCompleted:false,
+      alignCompleted:false,
     };
 
     this.click = this.click.bind(this);
@@ -23,18 +23,18 @@ class FormTrim extends Component {
 
   click(e){
     e.preventDefault();
-    var result = trimFiles({file1:'test1.fastq',file2:'test2.fastq'});
+    var result = alignFiles({file1:'test1',file2:'test2'});
     result.then(res => {
       if (res.data.err) {
         console.log(res)
         message.error(res.data.err);
       }
       else {
-        this.setState({trimCompleted: true});
+        this.setState({alignCompleted: true});
         //console.log(res.data);
         if(res.data.isTrimCompleted){
           this.setState({isTrimCompleted: true});
-           var file1Name = res.data.file1;
+          var file1Name = res.data.file1;
           var file2Name = res.data.file2;
           //console.log(file1Name);
           window.open("http://localhost:9000/result/trimmed_result/"+file1Name);
@@ -59,7 +59,7 @@ class FormTrim extends Component {
       <Form >
         <FormItem label="Start to trim" validateStatus="success">
           <Button type="primary" onClick={this.click} disabled={this.state.isloading}>
-            Trim
+            Align
           </Button>
         </FormItem>
       </Form>
@@ -74,5 +74,5 @@ function mapStateToProps(state) {
   };
 }
 
-const WrappedFormTrim = Form.create()(FormTrim);
-export default connect(mapStateToProps,{  } )(WrappedFormTrim);
+const WrappedFormAlignment = Form.create()(FormAlignment);
+export default connect(mapStateToProps,{  } )(WrappedFormAlignment);

@@ -8,7 +8,7 @@ import type { DiagComponentProps } from 'react-flow-diagram';
 import {
   store as diagramStore, setEntities
 } from 'react-flow-diagram';
-import {uploadFile} from '../../../redux/fastqcuploader/uploadActions.js';
+import {uploadFile} from '../../../redux/actions/uploadActions.js';
 import uploadFastqcActions from '../../../redux/uploadFastqc/actions.js';
 import dateformat from 'dateformat';
 import Form from '../../../components/uielements/form';
