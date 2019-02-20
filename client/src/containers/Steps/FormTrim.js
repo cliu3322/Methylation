@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Form, Button, message } from 'antd';
 import {trimFiles} from '../../redux/actions/trimActions.js';
+import SocketIOClient from 'socket.io-client';
 
 
 const FormItem = Form.Item;
@@ -17,33 +18,41 @@ class FormTrim extends Component {
     };
 
     this.click = this.click.bind(this);
+
+
   }
 
 
 
   click(e){
+    this.socket = SocketIOClient(`http://localhost:4000`);
+    this.socket.emit('init', {
+      senderId: 'trimaaaa',
+    });
+    this.socket.on('trim', message => {
+      console.log('trim',message)
+    });
+
+
     e.preventDefault();
     var result = trimFiles({file1:'test1.fastq',file2:'test2.fastq'});
     result.then(res => {
-      if (res.data.err) {
-        console.log(res)
-        message.error(res.data.err);
-      }
-      else {
-        this.setState({trimCompleted: true});
-        //console.log(res.data);
-        if(res.data.isTrimCompleted){
-          this.setState({isTrimCompleted: true});
-           var file1Name = res.data.file1;
-          var file2Name = res.data.file2;
-          //console.log(file1Name);
-          window.open("http://localhost:9000/result/trimmed_result/"+file1Name);
-          window.open("http://localhost:9000/result/trimmed_result/"+file2Name);
+      console.log(res)
 
-        } else {
-          this.setState({isTrimCompleted: false});
-        }
+      this.setState({trimCompleted: true});
+      //console.log(res.data);
+      if(res.data.isTrimCompleted){
+        this.setState({isTrimCompleted: true});
+         var file1Name = res.data.file1;
+        var file2Name = res.data.file2;
+        //console.log(file1Name);
+        window.open("http://localhost:9000/result/trimmed_result/"+file1Name);
+        window.open("http://localhost:9000/result/trimmed_result/"+file2Name);
+
+      } else {
+        this.setState({isTrimCompleted: false});
       }
+
 
 
     })
