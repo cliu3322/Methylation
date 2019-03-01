@@ -1,7 +1,7 @@
 
 SUMMARISING RUN PARAMETERS
 ==========================
-Input filename: ./uploads/test1.fastq
+Input filename: ../test_data/test1.fastq
 Trimming mode: paired-end
 Trim Galore version: 0.5.0
 Cutadapt version: 1.18
@@ -9,41 +9,46 @@ Quality Phred score cutoff: 20
 Quality encoding type selected: ASCII+33
 Adapter sequence: 'CTGTCTCTTATA' (Nextera Transposase sequence; auto-detected)
 Maximum trimming error rate: 0.1 (default)
-Minimum required adapter overlap (stringency): 5 bp
+Minimum required adapter overlap (stringency): 1 bp
 Minimum required sequence length for both reads before a sequence pair gets removed: 20 bp
+All sequences will be trimmed by 1 bp on their 3' end to avoid problems with invalid paired-end alignments with Bowtie 1
 
 
 This is cutadapt 1.18 with Python 3.6.6
-Command line parameters: -f fastq -e 0.1 -q 20 -O 5 -a CTGTCTCTTATA ./uploads/test1.fastq
+Command line parameters: -f fastq -e 0.1 -q 20 -O 1 -a CTGTCTCTTATA ../test_data/test1.fastq
 Processing reads on 1 core in single-end mode ...
-Finished in 0.18 s (18 us/read; 3.31 M reads/minute).
+Finished in 0.18 s (18 us/read; 3.29 M reads/minute).
 
 === Summary ===
 
 Total reads processed:                  10,000
-Reads with adapters:                       417 (4.2%)
+Reads with adapters:                     3,271 (32.7%)
 Reads written (passing filters):        10,000 (100.0%)
 
 Total basepairs processed:     1,510,000 bp
 Quality-trimmed:                  41,679 bp (2.8%)
-Total written (filtered):      1,449,289 bp (96.0%)
+Total written (filtered):      1,445,706 bp (95.7%)
 
 === Adapter 1 ===
 
-Sequence: CTGTCTCTTATA; Type: regular 3'; Length: 12; Trimmed: 417 times.
+Sequence: CTGTCTCTTATA; Type: regular 3'; Length: 12; Trimmed: 3271 times.
 
 No. of allowed errors:
 0-9 bp: 0; 10-12 bp: 1
 
 Bases preceding removed adapters:
-  A: 29.5%
-  C: 46.5%
-  G: 1.4%
-  T: 22.5%
+  A: 35.7%
+  C: 33.1%
+  G: 1.2%
+  T: 30.0%
   none/other: 0.0%
 
 Overview of removed sequences
 length	count	expect	max.err	error counts
+1	2136	2500.0	0	2136
+2	710	625.0	0	710
+3	5	156.2	0	5
+4	3	39.1	0	3
 5	1	9.8	0	1
 10	3	0.0	1	0 3
 11	8	0.0	1	0 8
@@ -120,7 +125,7 @@ length	count	expect	max.err	error counts
 113	1	0.0	1	0 1
 
 
-RUN STATISTICS FOR INPUT FILE: ./uploads/test1.fastq
+RUN STATISTICS FOR INPUT FILE: ../test_data/test1.fastq
 =============================================
 10000 sequences processed in total
 
